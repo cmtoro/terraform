@@ -9,6 +9,12 @@ download Terraform:
 https://www.terraform.io/downloads.html
 
 and run 
-'''sh 
 terraform init
-'''
+
+
+How to run:
+
+$ export AWS_ACCESS_KEY_ID="anaccesskey"
+$ export AWS_SECRET_ACCESS_KEY="asecretkey"
+$ export AWS_DEFAULT_REGION="sa-east-1"
+$ terraform plan

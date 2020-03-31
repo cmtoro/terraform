@@ -14,17 +14,24 @@ resource "aws_instance" "web" {
       "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
-      "sudo docker run hello-world"
+      "sudo docker run hello-world",
+      "mkdir /home/ubuntu/docker/"
     ]
-
-    provisioner "file" {
-      source = ""
-      destination = ""
-    }
 
     connection {
       user = "ubuntu"
-      private_key = file("carlos-key")
+      private_key = file("../code_terraform/carlos-key")
+      host = self.public_ip
+    }
+  }
+  
+  provisioner "file" {
+    source = "deploy.sh"
+    destination = "/home/ubuntu/docker/deploy.sh"
+
+    connection {
+      user = "ubuntu"
+      private_key = file("../code_terraform/carlos-key")
       host = self.public_ip
     }
   }

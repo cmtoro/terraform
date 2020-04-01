@@ -36,6 +36,17 @@ resource "aws_instance" "web" {
     }
   }
 
+  provisioner "file" {
+    source = "circleci.pub"
+    destination = "/home/ubuntu/circleci.pub"
+
+    connection {
+      user = "ubuntu"
+      private_key = file("../code_terraform/carlos-key")
+      host = self.public_ip
+    }
+  }
+
   tags = {
     Name = "${var.project_name}-instance"
   }

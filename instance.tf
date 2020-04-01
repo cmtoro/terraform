@@ -6,6 +6,17 @@ resource "aws_instance" "web" {
 
   vpc_security_group_ids = [ aws_security_group.ssh_ping_anywhere_terraform.id, aws_security_group.http_anywhere_terraform.id ]
 
+  provisioner "file" {
+    source = "circleci.pub"
+    destination = "/home/ubuntu/circleci.pub"
+
+    connection {
+      user = "ubuntu"
+      private_key = file("../code_terraform/carlos-key")
+      host = self.public_ip
+    }
+  }
+
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
@@ -15,7 +26,8 @@ resource "aws_instance" "web" {
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
       "sudo docker run hello-world",
-      "mkdir /home/ubuntu/docker/"
+      "mkdir /home/ubuntu/docker/",
+      "cat ~/circleci.pub >> ~/.ssh/authorized_keys"
     ]
 
     connection {
@@ -28,17 +40,6 @@ resource "aws_instance" "web" {
   provisioner "file" {
     source = "deploy.sh"
     destination = "/home/ubuntu/docker/deploy.sh"
-
-    connection {
-      user = "ubuntu"
-      private_key = file("../code_terraform/carlos-key")
-      host = self.public_ip
-    }
-  }
-
-  provisioner "file" {
-    source = "circleci.pub"
-    destination = "/home/ubuntu/circleci.pub"
 
     connection {
       user = "ubuntu"

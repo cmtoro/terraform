@@ -1,7 +1,7 @@
 project_name = "my-terraform"
 
-vpc_id = "vpc-6a232f0d"
+vpc_id = "vpc-811a1cfb"
 
-ami_id = "ami-05494b93950efa2fd"
+ami_id = "ami-07ebfd5b3428b6f4d"
 
-instance_type = "t3.micro"
+instance_type = "t2.micro"
